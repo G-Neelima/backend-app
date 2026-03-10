@@ -9,12 +9,14 @@
     <h2>Products Admin Page</h2>
     <a href="/products/add" >Add Products</a>
     <% products.forEach(product => { %>
+        <ul>
         <li><%= product.name %>-
             <%= product.desc %>-
             <%= product.price %>-
             <%= product.imageUrl %>-
             <a href="/products/<%= product._id %>/edit">Edit</a>-
             <a href="/products/<%= product._id %>/delete">Delete</a></li>
+        </ul>
         <% }) %>
 </body>
 </html>
