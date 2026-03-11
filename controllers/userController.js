@@ -9,7 +9,7 @@ const addUser = async (req,res) =>{
     await userModel.create(user);
     res.redirect("/users")
 };
-const addUserForm= (req,res)=>{
+const addUserForm= async (req,res)=>{
     res.render("users/add");
 }
 const editUserForm= async (req,res)=>{

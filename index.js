@@ -30,11 +30,14 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
+import homeRouter from "./routes/homeRoute.js";
 import productRouter from "./routes/productRoute.js";
-import { storeRouter } from "./routes/storeRoute.js";
-import { userRouter } from "./routes/userRoute.js";
+import storeRouter from "./routes/storeRoute.js";
+import userRouter from "./routes/userRoute.js";
+import authRouter from "./routes/authRoute.js";
 import mongoose from "mongoose";
 import dbConnect from "./config/db.js";
+import { authenticateAdmin } from "./middleware/auth.js";
 const app = express();
 dotenv.config()
 app.use(cors());
@@ -53,10 +56,16 @@ app.use(
   }),
 );
 
-app.use("/", storeRouter);
-// app.use("/auth", authRouter);
-app.use("/products", productRouter);
-app.use("/users", userRouter);
+app.use((req,res,next)=>{
+  res.locals.user = req.session.user;
+  next();
+});
+
+app.use("/auth", authRouter);
+app.use("/store", storeRouter);
+app.use("/",authenticateAdmin,homeRouter)
+app.use("/products",authenticateAdmin, productRouter);
+app.use("/users",authenticateAdmin, userRouter);
 
 
 const startServer = async () =>{

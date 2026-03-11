@@ -8,4 +8,4 @@ userRouter.get("/:id/edit",editUserForm);
 userRouter.get("/:id/delete",deleteUser);
 userRouter.post("/:id/save",saveUser);
 
-export {userRouter};
+export default userRouter
