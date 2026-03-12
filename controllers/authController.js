@@ -10,11 +10,12 @@ const validateUser = async (req,res) =>{
     if(user){
         const isMatch = await bcrypt.compare(password, user.password);
         if(isMatch){
+            req.session.user = user;
             res.redirect("/");
-        }else{
+        } else{
             res.redirect("/auth/login");
         }
-    }else{
+    } else{
         res.redirect("/auth/login");
     } 
 }; 
@@ -28,7 +29,7 @@ const registerUser = async (req,res) =>{
     body.password=hashedPassword;
     await userModel.create(body);
     res.redirect("/auth/login")
-}
+};
 // const signup = async (req, res) => {
 //   const { name, email, password } = req.body;
 //   const hashedPassword = await bcrypt.hash(password, 10);

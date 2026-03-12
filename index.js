@@ -30,6 +30,7 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
+import { authenticateAdmin } from "./middleware/auth.js";
 import homeRouter from "./routes/homeRoute.js";
 import productRouter from "./routes/productRoute.js";
 import storeRouter from "./routes/storeRoute.js";
@@ -37,7 +38,7 @@ import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoute.js";
 import mongoose from "mongoose";
 import dbConnect from "./config/db.js";
-import { authenticateAdmin } from "./middleware/auth.js";
+
 const app = express();
 dotenv.config()
 app.use(cors());
@@ -46,6 +47,7 @@ app.set("view engine", "ejs");
 app.set("views", "views");
 app.set("layout","layout")
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static("public"));
 
 app.use(
@@ -57,7 +59,7 @@ app.use(
 );
 
 app.use((req,res,next)=>{
-  res.locals.user = req.session.user;
+  res.locals.user = req.session.user;//first time no value after sucessfull login there is a value in req.session.user and it assigns it to that variable
   next();
 });
 
