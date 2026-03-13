@@ -31,13 +31,16 @@ import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
 import { authenticateAdmin } from "./middleware/auth.js";
+import dbConnect from "./config/db.js";
 import homeRouter from "./routes/homeRoute.js";
 import productRouter from "./routes/productRoute.js";
 import storeRouter from "./routes/storeRoute.js";
 import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoute.js";
+import orderRouter from "./routes/orderRoute.js";
+
 import mongoose from "mongoose";
-import dbConnect from "./config/db.js";
+
 
 const app = express();
 dotenv.config()
@@ -68,7 +71,7 @@ app.use("/store", storeRouter);
 app.use("/",authenticateAdmin,homeRouter)
 app.use("/products",authenticateAdmin, productRouter);
 app.use("/users",authenticateAdmin, userRouter);
-
+app.use("/orders",orderRouter);
 
 const startServer = async () =>{
   await dbConnect();

@@ -30,17 +30,33 @@ const registerUser = async (req,res) =>{
     await userModel.create(body);
     res.redirect("/auth/login")
 };
-// const signup = async (req, res) => {
-//   const { name, email, password } = req.body;
-//   const hashedPassword = await bcrypt.hash(password, 10);
-//   password = hashedPassword;
-//   await userModel.create({ name, email, password: hashedPassword });
-//   res.json({ message: "User Created" });
-// };
+const signup = async (req, res) => {
+  const { name, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  //password = hashedPassword;
+  const response= await userModel.create({ name, email, password: hashedPassword });
+  res.json(response);
+};
 
+const signin = async (req,res) =>{
+    const {email,password} = req.body;
+    const user = await userModel.findOne({ email});
+    if(user){
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(isMatch){
+            res.json(user);
+
+        }else{
+            res.json({ error: "Invalid Password"});
+        }
+    
+    }else{
+        res.json({ error: "Invalid User" });
+    }
+};
 const logout = async (req,res)=>{
       req.session.destroy();
       res.locals.user= null;
       res.redirect("/auth/login");
 };
-export {login, validateUser, register, registerUser, logout};
+export {login, validateUser, register, registerUser, logout, signin, signup};
