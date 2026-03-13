@@ -1,5 +1,6 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
 const login= async (req,res)=>{
     res.render("auth/login");
