@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import bcrypt from "bcrypt";
 
 const getUsers= async (req,res) => {
     const users= await userModel.find();
@@ -6,6 +7,8 @@ const getUsers= async (req,res) => {
 };
 const addUser = async (req,res) =>{
     const user= req.body;
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
     await userModel.create(user);
     res.redirect("/users")
 };
