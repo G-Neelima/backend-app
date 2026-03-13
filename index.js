@@ -30,7 +30,7 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import dotenv from "dotenv";
 import cors from "cors";
-import { authenticateAdmin } from "./middleware/auth.js";
+import { authenticateAdmin , authenticateUser } from "./middleware/auth.js";
 import dbConnect from "./config/db.js";
 import homeRouter from "./routes/homeRoute.js";
 import productRouter from "./routes/productRoute.js";
@@ -71,7 +71,7 @@ app.use("/store", storeRouter);
 app.use("/",authenticateAdmin,homeRouter)
 app.use("/products",authenticateAdmin, productRouter);
 app.use("/users",authenticateAdmin, userRouter);
-app.use("/orders",orderRouter);
+app.use("/orders",authenticateUser,orderRouter);
 
 const startServer = async () =>{
   await dbConnect();

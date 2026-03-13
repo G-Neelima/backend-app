@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema({
-    email: {type: String, required: true},
-    items: [{type: Object}],
-    orderValue: {type: Number, required: true},
-    status: {type: String, default: "Pending"},
-    date: {type: Date, default: Date.now()}
-
+  email: { type: String, required: true },
+  orderValue: { type: Number, required: true },
+  items: [{ type: Object }],
+  orderDate: { type: Number },
 });
 const orderModel = mongoose.model("orders",orderSchema);
 export default orderModel;

@@ -1,29 +1,19 @@
 import orderModel from "../models/orderModel.js";
+import express from "express"
 
-const placeOrder = async (req, res)=>{
-    try{
-         const newOrder = new orderModel({
-      email: req.body.email,
-      items: req.body.items,
-      OrderValue: req.body.OrderValue,
-      status: req.body.status,
-      date: req.body.date
-    });
+const placeOrder = async (req,res) =>{
+  const response = await orderModel.create(req.body);
+  res.json(response);
+}
 
-    await newOrder.save();
+const showOrders = async (req,res)=>{
+  try{
+    const email = req.params.email;
+    const response = await orderModel.find({ email });
+    res.status(200).json(response);
+  }catch(err){
+    res.status(401).json({ error: "Something went wrong"});
 
-    res.json({
-      success: true,
-      message: "Order stored in database"
-    });
-
-  } catch (error) {
-    console.log(error);
-    res.json({
-      success: false,
-      message: "Error storing order"
-    });
   }
 };
-
-export {placeOrder};
+export {placeOrder, showOrders};
