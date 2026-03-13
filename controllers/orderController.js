@@ -1,10 +1,10 @@
 import orderModel from "../models/orderModel.js";
-import express from "express"
+
 
 const placeOrder = async (req,res) =>{
   const response = await orderModel.create(req.body);
   res.json(response);
-}
+};
 
 const showOrders = async (req,res)=>{
   try{
