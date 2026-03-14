@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-const SECRET = "mysecret"
+const SECRET = "mysecret";
 const authenticateAdmin=(req, res, next)=>{
       if (req.session.user){
         next();
@@ -8,7 +8,7 @@ const authenticateAdmin=(req, res, next)=>{
         res.render("auth/login");
       }
 };
-const authenticateUser = (req,res,next) =>{
+const authenticateUser = (req, res, next) =>{
   try{
     const header = req.headers.authorization;
     const token = header.split(" ")[1];

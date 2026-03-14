@@ -1,12 +1,14 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-const SECRET = "mysecret"
+const SECRET = "mysecret";
+
 const login= async (req,res)=>{
     res.render("auth/login");
 };
+
 const validateUser = async (req,res) =>{
-    const {email,password}= req.body;
+    const { email, password }= req.body;
     const user = await userModel.findOne({email, role:"admin"});
     if(user){
         const isMatch = await bcrypt.compare(password, user.password);
@@ -20,17 +22,19 @@ const validateUser = async (req,res) =>{
         res.redirect("/auth/login");
     } 
 }; 
+
 const register = async (req,res) =>{
     res.render("auth/register");
 }
-const registerUser = async (req,res) =>{
 
+const registerUser = async (req,res) =>{
     const body= req.body;
     const hashedPassword= await bcrypt.hash(body.password,10);
     body.password=hashedPassword;
     await userModel.create(body);
     res.redirect("/auth/login")
 };
+
 const signup = async (req, res) => {
   const { name, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -40,8 +44,8 @@ const signup = async (req, res) => {
 };
 
 const signin = async (req,res) =>{
-    const {email,password} = req.body;
-    const user = await userModel.findOne({ email});
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email });
     if(user){
         const isMatch = await bcrypt.compare(password, user.password);
         if(isMatch){
@@ -51,7 +55,7 @@ const signin = async (req,res) =>{
                 email:user.email,
                 role:user.role,
             };
-            const token = jwt.sign(userObj, SECRET, {expiresIn: "1h"});
+            const token = jwt.sign(userObj, SECRET, { expiresIn: "1h" });
             res.json({...userObj, token });
 
         }else{
